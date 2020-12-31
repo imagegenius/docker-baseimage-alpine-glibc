@@ -9,19 +9,14 @@ LABEL maintainer="Alex Hyde"
 RUN \
    echo "**** install build packages ****" && \
    apk add --no-cache --virtual=build-dependencies \
-      curl && \
+      wget curl && \
    curl -o \
       /etc/apk/keys/sgerrand.rsa.pub \
       "https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub" && \
    cd /tmp && \
-   curl -o \
-      glibc-${VERSION}.apk \
-      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-${VERSION}.apk" && \
-   curl -o \
-      glibc-bin-${VERSION}.apk \
-      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-bin-${VERSION}.apk" && \
-   curl -o \
-      glibc-i18n-${VERSION}.apk \
+   wget -q \
+      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-${VERSION}.apk" \
+      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-bin-${VERSION}.apk" \
       "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-i18n-${VERSION}.apk" && \
    echo "**** install runtime packages ****" && \
    apk add --no-cache \
