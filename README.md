@@ -11,7 +11,7 @@ A custom base image built with [Alpine Linux][appurl], [glibc][glibcurl] and [s6
 ![alpine](https://img.shields.io/badge/alpine-edge-0D597F?style=for-the-badge&logo=alpine-linux) ![s6 overlay](https://img.shields.io/badge/s6_overlay-2.1.0.2-blue?style=for-the-badge) ![glibc](https://img.shields.io/badge/glibc-2.32-blue?style=for-the-badge)
 
 ## Credits
-*
+* [sgerrand/alpine-pkg-glibc](https://github.com/sgerrand/alpine-pkg-glibc) for the glibc packages
 
 ## Todo
 * Nothing, everything works 🙂
