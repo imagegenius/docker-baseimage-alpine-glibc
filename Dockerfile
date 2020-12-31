@@ -13,20 +13,21 @@ RUN \
    curl -o \
       /etc/apk/keys/sgerrand.rsa.pub \
       "https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub" && \
+   cd /tmp && \
    curl -o \
-      /tmp/glibc-${VERSION}.apk \
+      glibc-${VERSION}.apk \
       "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-${VERSION}.apk" && \
    curl -o \
-      /tmp/glibc-bin-${VERSION}.apk \
+      glibc-bin-${VERSION}.apk \
       "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-bin-${VERSION}.apk" && \
    curl -o \
-      /tmp/glibc-i18n-${VERSION}.apk \
+      glibc-i18n-${VERSION}.apk \
       "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-i18n-${VERSION}.apk" && \
    echo "**** install runtime packages ****" && \
    apk add --no-cache \
-      "/tmp/glibc-${VERSION}.apk" \
-      "/tmp/glibc-bin-${VERSION}.apk" \
-      "/tmp/glibc-i18n-${VERSION}.apk" && \
+      glibc-${VERSION}.apk \
+      glibc-bin-${VERSION}.apk \
+      glibc-i18n-${VERSION}.apk && \
    /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true && \
    echo "export LANG=$LANG" > /etc/profile.d/locale.sh && \
    echo "**** cleanup ****" && \
