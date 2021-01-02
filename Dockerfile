@@ -1,10 +1,7 @@
 FROM vcxpz/baseimage-alpine
 
-# set version label
-ARG BUILD_DATE
+# environment settings
 ARG VERSION
-LABEL build_version="glibc version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="Alex Hyde"
 
 RUN \
    echo "**** install build packages ****" && \
