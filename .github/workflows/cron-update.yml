@@ -5,7 +5,7 @@ on:
     - cron: "5 11 * * 0"
 
 jobs:
-  amd64:
+  latest:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -36,7 +36,7 @@ jobs:
           VERSION: ${{ steps.variables.outputs.VERSION }}
           DOCKERHUB_IMAGE: ${{ steps.variables.outputs.DOCKERHUB_IMAGE }}
         run: |
-          docker build --no-cache --pull . --file Dockerfile --build-arg VERSION="$VERSION" --build-arg BUILD_DATE="$(date +%Y-%m-%d)" --tag "$DOCKERHUB_IMAGE":cibuild
+          docker build --no-cache --pull . --file Dockerfile --build-arg VERSION="$VERSION" --tag "$DOCKERHUB_IMAGE":cibuild
 
       - name: Get New Package Versions From Image
         id: packages
