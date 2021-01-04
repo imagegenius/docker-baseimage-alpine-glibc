@@ -31,4 +31,5 @@ RUN \
       build-dependencies && \
    rm -rf \
       /etc/apk/keys/sgerrand.rsa.pub \
+      /root/.wget-hsts \
       /tmp/*
