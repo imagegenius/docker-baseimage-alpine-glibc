@@ -2,11 +2,13 @@ FROM vcxpz/baseimage-alpine
 
 # environment settings
 ARG VERSION
+ENV LANG=C.UTF-8
 
 RUN \
    echo "**** install build packages ****" && \
    apk add --no-cache --virtual=build-dependencies \
-      wget curl && \
+      curl \
+      wget && \
    curl -o \
       /etc/apk/keys/sgerrand.rsa.pub \
       "https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub" && \
