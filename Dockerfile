@@ -23,7 +23,7 @@ RUN \
       glibc-bin-${VERSION}.apk \
       glibc-i18n-${VERSION}.apk && \
    /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true && \
-   echo "export LANG=$LANG" > /etc/profile.d/locale.sh && \
+   echo "export LANG=$LANG" >/etc/profile.d/locale.sh && \
    echo "**** cleanup ****" && \
    apk del \
       glibc-i18n && \
