@@ -11,6 +11,7 @@ A custom base image built with [Alpine Linux][appurl], [glibc][glibcurl] and [s6
 
 ## Version Information
 ![alpine](https://img.shields.io/badge/alpine-edge-0D597F?style=for-the-badge&logo=alpine-linux) ![s6 overlay](https://img.shields.io/badge/s6_overlay-2.1.0.2-blue?style=for-the-badge) ![glibc](https://img.shields.io/badge/glibc-2.32-blue?style=for-the-badge)
+
 **[See here for a list of packages](https://github.com/hydazz/docker-baseimage-glibc/blob/main/package_versions.txt)**
 
 ## Credits
