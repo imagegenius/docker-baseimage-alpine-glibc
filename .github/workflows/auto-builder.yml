@@ -2,7 +2,7 @@ name: Auto Builder CI
 
 on:
   schedule:
-    - cron: "5 0 * * 0"
+    - cron: "5 0 * * 0" # L2 image
   release:
     types:
       - released
