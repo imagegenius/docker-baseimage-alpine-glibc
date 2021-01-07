@@ -6,9 +6,9 @@ OLD_OVERLAY_VERSION=$(cat version_info.json | jq -r .overlay_version)
 OLD_GLIBC_VERSION=$(cat version_info.json | jq -r .glibc_version)
 
 sed -i \
-  -e "s/${OLD_OVERLAY_VERSION}/${OVERLAY_VERSION}/g" \
-  -e "s/${OLD_GLIBC_VERSION}/${GLIBC_VERSION}/g" \
-  README.md
+	-e "s/${OLD_OVERLAY_VERSION}/${OVERLAY_VERSION}/g" \
+	-e "s/${OLD_GLIBC_VERSION}/${GLIBC_VERSION}/g" \
+	README.md
 
 NEW_VERSION_INFO="overlay_version|glibc_version
 ${OVERLAY_VERSION}|${GLIBC_VERSION}"
