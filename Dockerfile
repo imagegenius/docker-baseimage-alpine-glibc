@@ -4,7 +4,7 @@ FROM vcxpz/baseimage-alpine
 ARG VERSION
 ENV LANG=C.UTF-8
 
-RUN \
+RUN set -x && \
    echo "**** install build packages ****" && \
    apk add --no-cache --virtual=build-dependencies \
       curl \
@@ -13,7 +13,7 @@ RUN \
       /etc/apk/keys/sgerrand.rsa.pub \
       "https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub" && \
    cd /tmp && \
-   wget -q \
+   wget \
       "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-${VERSION}.apk" \
       "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-bin-${VERSION}.apk" \
       "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-i18n-${VERSION}.apk" && \
