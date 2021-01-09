@@ -14,7 +14,7 @@ jobs:
       - name: Set Enviroment Variables
         id: variables
         run: |
-          echo "::set-output name=OLD_VERSION::$(curl -sX GET "https://api.github.com/repos/hydazz/docker-baseimage-glibc/releases/latest" | jq -r .tag_name)"
+          echo "::set-output name=OLD_VERSION::$(curl -sX GET "https://api.github.com/repos/hydazz/docker-baseimage-alpine-glibc/releases/latest" | jq -r .tag_name)"
           echo "::set-output name=VERSION::$(curl -sX GET "https://api.github.com/repos/sgerrand/alpine-pkg-glibc/releases/latest" | jq -r .tag_name)"
 
       - name: Create Tag
@@ -34,4 +34,4 @@ jobs:
                "draft": false,
                "prerelease": false
           }' >releasebody.json
-          curl -H "Authorization: token $GITHUB_TOKEN" -X POST https://api.github.com/repos/hydazz/docker-baseimage-glibc/releases -d @releasebody.json
+          curl -H "Authorization: token $GITHUB_TOKEN" -X POST https://api.github.com/repos/hydazz/docker-baseimage-alpine-glibc/releases -d @releasebody.json

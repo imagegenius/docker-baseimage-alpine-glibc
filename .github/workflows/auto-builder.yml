@@ -18,7 +18,7 @@ jobs:
         id: variables
         env:
           DOCKERHUB_USER: vcxpz
-          DOCKERHUB_IMAGE: baseimage-glibc
+          DOCKERHUB_IMAGE: baseimage-alpine-glibc
           DOCKERIMAGE_TAG: latest
         run: |
           echo "DOCKERHUB_IMAGE=${DOCKERHUB_IMAGE}" >>$GITHUB_ENV
