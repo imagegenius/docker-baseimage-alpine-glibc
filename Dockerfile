@@ -1,5 +1,7 @@
 FROM vcxpz/baseimage-alpine
 
+LABEL maintainer="hydaz"
+
 # environment settings
 ARG VERSION
 ENV LANG=C.UTF-8
