@@ -4,7 +4,7 @@ FROM vcxpz/baseimage-alpine
 ARG VERSION
 ENV LANG=C.UTF-8
 
-RUN set -x && \
+RUN set -xe && \
    echo "**** install build packages ****" && \
    apk add --no-cache --virtual=build-dependencies \
       curl \
