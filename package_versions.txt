@@ -15,7 +15,7 @@ libacl-2.2.53-r0
 libattr-2.4.48-r0
 libc-utils-0.7.2-r3
 libcrypto1.1-1.1.1i-r0
-libgcc-10.2.1_pre1-r1
+libgcc-10.2.1_pre1-r2
 libintl-0.20.2-r0
 libproc-3.3.16-r0
 libssl1.1-1.1.1i-r0
