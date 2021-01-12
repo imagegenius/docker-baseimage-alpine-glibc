@@ -54,10 +54,13 @@ jobs:
           git config --global user.name "github-actions"
 
       - name: Build And Push The Docker Image (CI Build)
+        env:
+          VERSION: ${{ steps.variables.outputs.VERSION }}
         run: |
           docker build \
             --platform=${PLATFORMS} \
             --output "type=image,push=true" \
+            --build-arg VERSION=${VERSION} \
             --tag ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:cibuild \
             --file Dockerfile .
 
@@ -68,10 +71,13 @@ jobs:
           curl -sSL https://raw.githubusercontent.com/hydazz/scripts/main/docker/docker-ci.sh | bash
 
       - name: Build And Push The Docker Image
+        env:
+          VERSION: ${{ steps.variables.outputs.VERSION }}
         run: |
           docker build \
             --platform=${PLATFORMS} \
             --output "type=image,push=true" \
+            --build-arg VERSION=${VERSION} \
             --tag ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${DOCKERIMAGE_TAG} \
             --tag ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${VERSION} \
             --file Dockerfile .
