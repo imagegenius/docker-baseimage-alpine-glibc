@@ -1,7 +1,7 @@
 FROM vcxpz/baseimage-alpine
 
 # environment settings
-ARG VERSION
+ARG GLIBC_RELEASE
 ENV LANG=C.UTF-8
 
 RUN set -xe && \
@@ -14,14 +14,14 @@ RUN set -xe && \
       "https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub" && \
    cd /tmp && \
    wget \
-      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-${VERSION}.apk" \
-      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-bin-${VERSION}.apk" \
-      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-i18n-${VERSION}.apk" && \
+      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_RELEASE}/glibc-${GLIBC_RELEASE}.apk" \
+      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_RELEASE}/glibc-bin-${GLIBC_RELEASE}.apk" \
+      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_RELEASE}/glibc-i18n-${GLIBC_RELEASE}.apk" && \
    echo "**** install runtime packages ****" && \
    apk add --no-cache \
-      glibc-${VERSION}.apk \
-      glibc-bin-${VERSION}.apk \
-      glibc-i18n-${VERSION}.apk && \
+      glibc-${GLIBC_RELEASE}.apk \
+      glibc-bin-${GLIBC_RELEASE}.apk \
+      glibc-i18n-${GLIBC_RELEASE}.apk && \
    /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true && \
    echo "export LANG=$LANG" >/etc/profile.d/locale.sh && \
    echo "**** cleanup ****" && \

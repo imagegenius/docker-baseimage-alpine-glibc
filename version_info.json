@@ -1,4 +1,4 @@
 {
   "overlay_version": "2.1.0.2",
-  "glibc_version": "2.32"
+  "glibc_release": "2.32"
 }

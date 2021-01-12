@@ -38,7 +38,7 @@ jobs:
           echo "DOCKERHUB_IMAGE=${DOCKERHUB_IMAGE}" >>$GITHUB_ENV
           echo "DOCKERHUB_USER=${DOCKERHUB_USER}" >>$GITHUB_ENV
           echo "DOCKERIMAGE_TAG=${DOCKERIMAGE_TAG}" >>$GITHUB_ENV
-          echo "::set-output name=VERSION::$(curl -sX GET "https://api.github.com/repos/hydazz/docker-${DOCKERHUB_IMAGE}/releases/latest" | jq -r .tag_name)"
+          echo "::set-output name=GLIBC_RELEASE::$(curl -sX GET "https://api.github.com/repos/hydazz/docker-${DOCKERHUB_IMAGE}/releases/latest" | jq -r .tag_name)"
           echo "::set-output name=USER_IMAGE::${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}"
           echo "PLATFORMS=${PLATFORMS}" >>$GITHUB_ENV
 
@@ -55,12 +55,12 @@ jobs:
 
       - name: Build And Push The Docker Image (CI Build)
         env:
-          VERSION: ${{ steps.variables.outputs.VERSION }}
+          GLIBC_RELEASE: ${{ steps.variables.outputs.GLIBC_RELEASE }}
         run: |
           docker build \
             --platform=${PLATFORMS} \
             --output "type=image,push=true" \
-            --build-arg VERSION=${VERSION} \
+            --build-arg GLIBC_RELEASE=${GLIBC_RELEASE} \
             --tag ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:cibuild \
             --file Dockerfile .
 
@@ -72,14 +72,14 @@ jobs:
 
       - name: Build And Push The Docker Image
         env:
-          VERSION: ${{ steps.variables.outputs.VERSION }}
+          GLIBC_RELEASE: ${{ steps.variables.outputs.GLIBC_RELEASE }}
         run: |
           docker build \
             --platform=${PLATFORMS} \
             --output "type=image,push=true" \
-            --build-arg VERSION=${VERSION} \
+            --build-arg GLIBC_RELEASE=${GLIBC_RELEASE} \
             --tag ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${DOCKERIMAGE_TAG} \
-            --tag ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${VERSION} \
+            --tag ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${GLIBC_RELEASE} \
             --file Dockerfile .
 
       - name: Get New Package Versions From Image
