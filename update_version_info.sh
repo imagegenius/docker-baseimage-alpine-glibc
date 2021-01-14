@@ -1,9 +1,9 @@
 #!/bin/bash
 
 OVERLAY_VERSION=$(curl -sX GET "https://raw.githubusercontent.com/hydazz/docker-baseimage-alpine/main/version_info.json" | jq -r .overlay_version)
-GLIBC_RELEASE=$(cat package_versions.txt | grep -E "glibc.*?-" | sed -n 1p | cut -c 7- | sed -E 's/-r.*//g')
-OLD_OVERLAY_VERSION=$(cat version_info.json | jq -r .overlay_version)
-OLD_GLIBC_RELEASE=$(cat version_info.json | jq -r .glibc_release)
+GLIBC_RELEASE=$(grep <package_versions.txt -E "glibc.*?-" | sed -n 1p | cut -c 7- | sed -E 's/-r.*//g')
+OLD_OVERLAY_VERSION=$(jq <version_info.json -r .overlay_version)
+OLD_GLIBC_RELEASE=$(jq <version_info.json -r .glibc_release)
 
 sed -i \
 	-e "s/${OLD_OVERLAY_VERSION}/${OVERLAY_VERSION}/g" \

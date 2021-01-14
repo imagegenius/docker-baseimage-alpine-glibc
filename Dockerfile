@@ -1,4 +1,4 @@
-FROM vcxpz/baseimage-alpine
+FROM vcxpz/baseimage-alpine:latest
 
 # environment settings
 ARG GLIBC_RELEASE
