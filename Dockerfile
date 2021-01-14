@@ -22,6 +22,7 @@ RUN set -xe && \
       glibc-${GLIBC_RELEASE}.apk \
       glibc-bin-${GLIBC_RELEASE}.apk \
       glibc-i18n-${GLIBC_RELEASE}.apk && \
+   cd / && \
    /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true && \
    echo "export LANG=$LANG" >/etc/profile.d/locale.sh && \
    echo "**** cleanup ****" && \
