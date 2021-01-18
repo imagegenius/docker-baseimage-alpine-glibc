@@ -1,7 +1,7 @@
 FROM vcxpz/baseimage-alpine:latest
 
 # environment settings
-ARG GLIBC_RELEASE
+ARG VERSION
 ENV LANG=C.UTF-8
 
 RUN set -xe && \
@@ -12,14 +12,14 @@ RUN set -xe && \
       /etc/apk/keys/sgerrand.rsa.pub \
       "https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub" && \
    curl --silent -o \
-      /tmp/glibc-${GLIBC_RELEASE}.apk -L \
-      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_RELEASE}/glibc-${GLIBC_RELEASE}.apk" && \
+      /tmp/glibc-${VERSION}.apk -L \
+      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-${VERSION}.apk" && \
    curl --silent -o \
-      /tmp/glibc-bin-${GLIBC_RELEASE}.apk -L \
-      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_RELEASE}/glibc-bin-${GLIBC_RELEASE}.apk" && \
+      /tmp/glibc-bin-${VERSION}.apk -L \
+      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-bin-${VERSION}.apk" && \
    curl --silent -o \
-      /tmp/glibc-i18n-${GLIBC_RELEASE}.apk -L \
-      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_RELEASE}/glibc-i18n-${GLIBC_RELEASE}.apk" && \
+      /tmp/glibc-i18n-${VERSION}.apk -L \
+      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-i18n-${VERSION}.apk" && \
    echo "**** install runtime packages ****" && \
    apk add --no-cache \
       /tmp/*.apk && \
