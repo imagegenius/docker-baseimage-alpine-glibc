@@ -7,29 +7,29 @@ ENV LANG=C.UTF-8
 RUN \
    echo "**** install build packages ****" && \
    apk add --no-cache --virtual=build-dependencies \
-      curl && \
+     curl && \
    curl --silent -o \
-      /etc/apk/keys/sgerrand.rsa.pub \
-      "https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub" && \
+     /etc/apk/keys/sgerrand.rsa.pub \
+     "https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub" && \
    curl --silent -o \
-      /tmp/glibc-${VERSION}.apk -L \
-      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-${VERSION}.apk" && \
+     /tmp/glibc-${VERSION}.apk -L \
+     "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-${VERSION}.apk" && \
    curl --silent -o \
-      /tmp/glibc-bin-${VERSION}.apk -L \
-      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-bin-${VERSION}.apk" && \
+     /tmp/glibc-bin-${VERSION}.apk -L \
+     "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-bin-${VERSION}.apk" && \
    curl --silent -o \
-      /tmp/glibc-i18n-${VERSION}.apk -L \
-      "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-i18n-${VERSION}.apk" && \
+     /tmp/glibc-i18n-${VERSION}.apk -L \
+     "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-i18n-${VERSION}.apk" && \
    echo "**** install runtime packages ****" && \
    apk add --no-cache \
-      /tmp/*.apk && \
+     /tmp/*.apk && \
    /usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true && \
    echo "export LANG=$LANG" >/etc/profile.d/locale.sh && \
    echo "**** cleanup ****" && \
    apk del \
-      glibc-i18n && \
+     glibc-i18n && \
    apk del --purge \
-      build-dependencies && \
+     build-dependencies && \
    rm -rf \
-      /etc/apk/keys/sgerrand.rsa.pub \
-      /tmp/*
+     /etc/apk/keys/sgerrand.rsa.pub \
+     /tmp/*
