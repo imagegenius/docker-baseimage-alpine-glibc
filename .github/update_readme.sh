@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP_VERSION=${APP_VERSION//-r*/}
+GLIBC=$(grep <package_versions.txt -E "glibc.*?-" | sed -n 1p | cut -c 7- | sed -E 's/-r.*//g')
 
 echo "## docker-baseimage-alpine-glibc
 
@@ -10,7 +10,7 @@ A custom base image built with [Alpine Linux][appurl], [glibc][glibcurl] and [s6
 
 ## Version Information
 
-![alpine](https://img.shields.io/badge/alpine-edge-0D597F?style=for-the-badge&logo=alpine-linux) ![glibc](https://img.shields.io/badge/glibc-${APP_VERSION}-blue?style=for-the-badge)
+![alpine](https://img.shields.io/badge/alpine-edge-0D597F?style=for-the-badge&logo=alpine-linux) ![glibc](https://img.shields.io/badge/glibc-${GLIBC}-blue?style=for-the-badge)
 
 See [package_versions.txt](package_versions.txt) for a full list of the packages and package versions used in this image
 
