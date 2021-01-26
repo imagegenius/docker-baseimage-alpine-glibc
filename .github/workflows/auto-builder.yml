@@ -4,8 +4,7 @@ name: Auto Builder CI
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "10 0 * * 0"
+  repository_dispatch:
   release:
     types:
       - released
@@ -73,4 +72,10 @@ jobs:
           username: vcxpz
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: vcxpz/baseimage-alpine-glibc
+
+      - name: Trigger Images
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+        run: |
+          curl -sSL https://raw.githubusercontent.com/hydazz/docker-utils/main/github/trigger_build.sh | bash
 
