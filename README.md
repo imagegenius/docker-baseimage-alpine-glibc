@@ -15,5 +15,7 @@ See [package_versions.txt](package_versions.txt) for a full list of the packages
 -   [sgerrand/alpine-pkg-glibc](https://github.com/sgerrand/alpine-pkg-glibc) for the glibc packages
 
 [appurl]: https://alpinelinux.org
+
 [s6overlay]: https://github.com/just-containers/s6-overlay
+
 [glibcurl]: https://www.gnu.org/software/libc/
