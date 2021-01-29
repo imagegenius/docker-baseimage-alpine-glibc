@@ -4,12 +4,6 @@
 
 A custom base image built with [Alpine Linux][appurl], [glibc][glibcurl] and [s6 overlay][s6overlay]
 
-## Version Information
-
-![alpine](https://img.shields.io/badge/alpine-edge-0D597F?style=for-the-badge&logo=alpine-linux) ![glibc](https://img.shields.io/badge/glibc-2.32-blue?style=for-the-badge)
-
-See [package_versions.txt](package_versions.txt) for a full list of the packages and package versions used in this image
-
 ## Credits
 
 -   [sgerrand/alpine-pkg-glibc](https://github.com/sgerrand/alpine-pkg-glibc) for the glibc packages
