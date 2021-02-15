@@ -1,5 +1,4 @@
-ARG TAG
-FROM vcxpz/baseimage-alpine:${TAG}
+FROM vcxpz/baseimage-alpine:latest
 
 # environment settings
 ARG VERSION
