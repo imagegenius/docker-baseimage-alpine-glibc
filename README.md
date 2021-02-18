@@ -6,7 +6,7 @@ A custom base image built with [Alpine Linux][appurl], [glibc][glibcurl] and [s6
 
 ## Credits
 
-- [sgerrand/alpine-pkg-glibc](https://github.com/sgerrand/alpine-pkg-glibc) for the glibc packages
+-   [sgerrand/alpine-pkg-glibc](https://github.com/sgerrand/alpine-pkg-glibc) for the glibc packages
 
 [appurl]: https://alpinelinux.org
 [glibcurl]: https://www.gnu.org/software/libc/
