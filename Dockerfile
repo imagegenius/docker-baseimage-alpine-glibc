@@ -4,20 +4,20 @@ FROM vcxpz/baseimage-alpine:latest
 ARG VERSION
 ENV LANG=C.UTF-8
 
-RUN \
+RUN set -xe && \
 	echo "**** install build packages ****" && \
 	apk add --no-cache --virtual=build-dependencies \
 		curl && \
-	curl --silent -o \
+	curl -o \
 		/etc/apk/keys/sgerrand.rsa.pub \
 		"https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub" && \
-	curl --silent -o \
+	curl -o \
 		/tmp/glibc-${VERSION}.apk -L \
 		"https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-${VERSION}.apk" && \
-	curl --silent -o \
+	curl -o \
 		/tmp/glibc-bin-${VERSION}.apk -L \
 		"https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-bin-${VERSION}.apk" && \
-	curl --silent -o \
+	curl -o \
 		/tmp/glibc-i18n-${VERSION}.apk -L \
 		"https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-i18n-${VERSION}.apk" && \
 	echo "**** install runtime packages ****" && \
