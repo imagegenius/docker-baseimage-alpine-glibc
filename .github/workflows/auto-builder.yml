@@ -82,12 +82,14 @@ jobs:
         run: |
           . .github/vars.conf
           for i in ${IMAGES}; do
-          	echo "Triggering build for ${i}"
+          	BRANCH=${i/*\//}
+          	REPO=${i/\/*/}
+          	echo "Triggering build for ${REPO}/${BRANCH}"
           	curl \
-          		-H "Accept: application/vnd.github.everest-preview+json" \
+          		-H "Accept: application/vnd.github.v3+json" \
           		-H "Authorization: token ${TOKEN}" \
           		--request POST \
-          		--data '{"event_type": "Auto Trigger"}' \
-          		https://api.github.com/repos/hydazz/docker-${i}/dispatches
+          		--data '{"ref": "'${BRANCH}'"}' \
+          		https://api.github.com/repos/hydazz/docker-${REPO}/actions/workflows/auto-builder.yml/dispatches
           done
 
