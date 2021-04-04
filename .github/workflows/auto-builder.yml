@@ -85,11 +85,11 @@ jobs:
           	BRANCH=${i/*\//}
           	REPO=${i/\/*/}
           	echo "ℹ️ Triggering build for ${REPO}/${BRANCH}"
-          	curl --fail \
+          	curl -qf \
           		-H "Accept: application/vnd.github.v3+json" \
           		-H "Authorization: token ${TOKEN}" \
           		--request POST \
           		--data '{"ref": "'${BRANCH}'"}' \
-          		https://api.github.com/repos/hydazz/docker-${REPO}/actions/workflows/auto-builder.yml/dispatches >/dev/null
+          		https://api.github.com/repos/hydazz/docker-${REPO}/actions/workflows/auto-builder.yml/dispatches
           done
 
