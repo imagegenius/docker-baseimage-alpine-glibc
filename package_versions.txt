@@ -15,7 +15,7 @@ libattr-2.5.1-r1
 libc-utils-0.7.2-r3
 libcrypto1.1-1.1.1l-r7
 libcurl-7.80.0-r0
-libgcc-11.2.1_git20211125-r1
+libgcc-11.2.1_git20211128-r1
 libintl-0.21-r0
 libproc-3.3.17-r0
 libretls-3.3.4-r2
@@ -23,8 +23,8 @@ libssl1.1-1.1.1l-r7
 linux-pam-1.5.2-r0
 musl-1.2.2-r7
 musl-utils-1.2.2-r7
-ncurses-libs-6.3_p20211120-r0
-ncurses-terminfo-base-6.3_p20211120-r0
+ncurses-libs-6.3_p20211127-r0
+ncurses-terminfo-base-6.3_p20211127-r0
 nghttp2-libs-1.46.0-r0
 procps-3.3.17-r0
 readline-8.1.1-r0
