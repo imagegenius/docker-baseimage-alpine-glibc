@@ -2,9 +2,15 @@ FROM vcxpz/baseimage-alpine:latest
 
 # environment settings
 ARG VERSION
-ENV LANG=C.UTF-8
 
 RUN set -xe && \
+	echo "**** install build packages ****" && \
+	apk add --no-cache --virtual=build-dependencies \
+		jq && \
+	if [ -z ${VERSION} ]; then \
+		VERSION=$(curl -sL "https://api.github.com/repos/hydazz/docker-baseimage-alpine-glibc/releases/latest" | \
+			jq -r '.tag_name'); \
+	fi && \
 	curl -o \
 		/etc/apk/keys/sgerrand.rsa.pub \
 		"https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub" && \
@@ -20,10 +26,11 @@ RUN set -xe && \
 	echo "**** install runtime packages ****" && \
 	apk add --no-cache \
 		/tmp/*.apk && \
-	/usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 "$LANG" || true && \
-	echo "export LANG=$LANG" >/etc/profile.d/locale.sh && \
+	/usr/glibc-compat/bin/localedef -i en_US -f UTF-8 en_US.UTF-8 && \
 	echo "**** cleanup ****" && \
 	apk del \
+		build-dependencies \
+		glibc-bin \
 		glibc-i18n && \
 	rm -rf \
 		/etc/apk/keys/sgerrand.rsa.pub \
