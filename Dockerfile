@@ -30,7 +30,6 @@ RUN set -xe && \
 	echo "**** cleanup ****" && \
 	apk del \
 		build-dependencies \
-		glibc-bin \
 		glibc-i18n && \
 	rm -rf \
 		/etc/apk/keys/sgerrand.rsa.pub \
