@@ -3,6 +3,9 @@ FROM vcxpz/baseimage-alpine:latest
 # environment settings
 ARG VERSION
 
+# ld-linux-x86-64.so.2 -> /usr/glibc-compat/lib/ld-linux-x86-64.so.2
+# https://github.com/sgerrand/alpine-pkg-glibc/pull/180
+
 RUN set -xe && \
 	echo "**** install build packages ****" && \
 	apk add --no-cache --virtual=build-dependencies \
@@ -22,6 +25,7 @@ RUN set -xe && \
 	done && \
 	(/usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true) && \
 	echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh && \
+	ln -fs /usr/glibc-compat/lib/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2 && \
 	echo "**** cleanup ****" && \
 	apk del \
 		build-dependencies \
