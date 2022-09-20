@@ -21,7 +21,7 @@ RUN set -xe && \
 		curl -o \
         	/tmp/${i}-${VERSION}.apk -L \
         	"https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/${i}-${VERSION}.apk"; \
-    	apk add /tmp/${i}-${VERSION}.apk; \
+    	apk add --force-overwrite /tmp/${i}-${VERSION}.apk; \
 	done && \
 	(/usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true) && \
 	echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh && \
