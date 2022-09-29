@@ -4,6 +4,9 @@
 
 A custom base image built with [Alpine Linux][appurl], [glibc][glibcurl] and [s6 overlay][s6overlay]
 
+To those who say *why install glibc on alpine? :unamused:*
+I say the resulting images are still almost 50% smaller with no tradeoffs
+
 ## Credits
 
 -   [sgerrand/alpine-pkg-glibc](https://github.com/sgerrand/alpine-pkg-glibc) for the glibc packages
