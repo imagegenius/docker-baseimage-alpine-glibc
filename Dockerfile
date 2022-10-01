@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-alpine:3.16
+FROM hydaz/baseimage-alpine:latest
 
 # environment settings
 ARG VERSION
