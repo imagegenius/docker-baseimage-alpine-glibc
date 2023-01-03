@@ -6,7 +6,7 @@ ARG VERSION
 # ld-linux-x86-64.so.2 -> /usr/glibc-compat/lib/ld-linux-x86-64.so.2
 # https://github.com/sgerrand/alpine-pkg-glibc/pull/180
 
-RUN set -xe && \
+RUN  \
 	echo "**** install build packages ****" && \
 	apk add --no-cache --virtual=build-dependencies \
 		jq && \
