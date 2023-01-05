@@ -1,0 +1,28 @@
+---
+
+# jenkins variables
+project_name: docker-baseimage-alpine-glibc
+external_type: custom_json
+release_type: stable
+release_tag: latest
+ig_branch: main
+repo_vars:
+  - JSON_URL = 'https://api.github.com/repos/sgerrand/alpine-pkg-glibc/releases/latest'
+  - JSON_PATH = '.tag_name'
+  - BUILD_VERSION_ARG = 'GLIBC_VERSION'
+  - IG_USER = 'imagegenius'
+  - IG_REPO = 'docker-baseimage-alpine-glibc'
+  - CONTAINER_NAME = 'baseimage-alpine-glibc'
+  - DOCKERHUB_IMAGE = 'imagegenius/baseimage-alpine-glibc'
+  - DEV_DOCKERHUB_IMAGE = 'igdev/baseimage-alpine-glibc'
+  - PR_DOCKERHUB_IMAGE = 'igpipepr/baseimage-alpine-glibc'
+  - DIST_IMAGE = 'alpine'
+  - MULTIARCH = 'false'
+  - CI = 'true'
+  - CI_WEB = 'false'
+  - CI_PORT = '80'
+  - CI_SSL = 'true'
+  - CI_DELAY = '30'
+  - CI_DOCKERENV = 'TZ=US/Pacific'
+  - CI_AUTH='user:password'
+  - CI_WEBPATH = ''
