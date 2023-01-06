@@ -2,13 +2,14 @@
 
 # jenkins variables
 project_name: docker-baseimage-alpine-glibc
-external_type: custom_json
+external_type: github_stable
 release_type: stable
 release_tag: latest
 ig_branch: main
 repo_vars:
-  - JSON_URL = 'https://api.github.com/repos/sgerrand/alpine-pkg-glibc/releases/latest'
-  - JSON_PATH = '.tag_name'
+  - EXT_GIT_BRANCH = 'main'
+  - EXT_USER = 'sgerrand'
+  - EXT_REPO = 'alpine-pkg-glibc'
   - BUILD_VERSION_ARG = 'GLIBC_VERSION'
   - IG_USER = 'imagegenius'
   - IG_REPO = 'docker-baseimage-alpine-glibc'
