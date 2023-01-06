@@ -14,8 +14,9 @@ pipeline {
   environment {
     BUILDS_DISCORD=credentials('build_webhook_url')
     GITHUB_TOKEN=credentials('github_token')
-    JSON_URL = 'https://api.github.com/repos/sgerrand/alpine-pkg-glibc/releases/latest'
-    JSON_PATH = '.tag_name'
+    EXT_GIT_BRANCH = 'main'
+    EXT_USER = 'sgerrand'
+    EXT_REPO = 'alpine-pkg-glibc'
     BUILD_VERSION_ARG = 'GLIBC_VERSION'
     IG_USER = 'imagegenius'
     IG_REPO = 'docker-baseimage-alpine-glibc'
@@ -98,14 +99,21 @@ pipeline {
     /* ########################
        External Release Tagging
        ######################## */
-    // If this is a custom json endpoint parse the return to get external tag
-    stage("Set ENV custom_json"){
+    // If this is a stable github release use the latest endpoint from github to determine the ext tag
+    stage("Set ENV github_stable"){
      steps{
        script{
          env.EXT_RELEASE = sh(
-           script: '''curl -s ${JSON_URL} | jq -r ". | ${JSON_PATH}" ''',
+           script: '''curl -H "Authorization: token ${GITHUB_TOKEN}" -s https://api.github.com/repos/${EXT_USER}/${EXT_REPO}/releases/latest | jq -r '. | .tag_name' ''',
            returnStdout: true).trim()
-         env.RELEASE_LINK = env.JSON_URL
+       }
+     }
+    }
+    // If this is a stable or devel github release generate the link for the build message
+    stage("Set ENV github_link"){
+     steps{
+       script{
+         env.RELEASE_LINK = 'https://github.com/' + env.EXT_USER + '/' + env.EXT_REPO + '/releases/tag/' + env.EXT_RELEASE
        }
      }
     }
@@ -419,7 +427,7 @@ pipeline {
             sh '''#! /bin/bash
                   echo $GITHUB_TOKEN | docker login ghcr.io -u ImageGenius-CI --password-stdin
                '''
-            sh "docker buildx build --platform=linux/arm64 --output \"type=docker\" \
+            sh "docker build \
               --label \"org.opencontainers.image.created=${GITHUB_DATE}\" \
               --label \"org.opencontainers.image.authors=imagegenius.io\" \
               --label \"org.opencontainers.image.url=https://github.com/imagegenius/docker-baseimage-alpine-glibc/packages\" \
@@ -760,11 +768,11 @@ pipeline {
              "tagger": {"name": "ImageGenius Jenkins","email": "ci@imagegenius.io","date": "'${GITHUB_DATE}'"}}' '''
         echo "Pushing New release for Tag"
         sh '''#! /bin/bash
-              echo "Data change at JSON endpoint ${JSON_URL}" > releasebody.json
+              curl -H "Authorization: token ${GITHUB_TOKEN}" -s https://api.github.com/repos/${EXT_USER}/${EXT_REPO}/releases/latest | jq '. |.body' | sed 's:^.\\(.*\\).$:\\1:' > releasebody.json
               echo '{"tag_name":"'${META_TAG}'",\
                      "target_commitish": "main",\
                      "name": "'${META_TAG}'",\
-                     "body": "**ImageGenius Changes:**\\n\\n'${IG_RELEASE_NOTES}'\\n\\n**Remote Changes:**\\n\\n' > start
+                     "body": "**ImageGenius Changes:**\\n\\n'${IG_RELEASE_NOTES}'\\n\\n**'${EXT_REPO}' Changes:**\\n\\n' > start
               printf '","draft": false,"prerelease": false}' >> releasebody.json
               paste -d'\\0' start releasebody.json > releasebody.json.done
               curl -H "Authorization: token ${GITHUB_TOKEN}" -X POST https://api.github.com/repos/${IG_USER}/${IG_REPO}/releases -d @releasebody.json.done'''
