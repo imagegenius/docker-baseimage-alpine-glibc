@@ -25,7 +25,7 @@ pipeline {
     DIST_TAG = '3.17'
     DIST_REPO = 'https://packages.imagegenius.io/v3.17/'
     DIST_REPO_PACKAGES = 'glibc'
-    MULTIARCH = 'yes'
+    MULTIARCH = 'false'
     CI = 'true'
     CI_WEB = 'false'
     CI_PORT = '80'
