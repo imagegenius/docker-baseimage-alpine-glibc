@@ -2,14 +2,11 @@
 
 # jenkins variables
 project_name: docker-baseimage-alpine-glibc
-external_type: github_stable
+external_type: alpine_repo
 release_type: stable
 release_tag: latest
 ig_branch: main
 repo_vars:
-  - EXT_GIT_BRANCH = 'main'
-  - EXT_USER = 'sgerrand'
-  - EXT_REPO = 'alpine-pkg-glibc'
   - BUILD_VERSION_ARG = 'GLIBC_VERSION'
   - IG_USER = 'imagegenius'
   - IG_REPO = 'docker-baseimage-alpine-glibc'
@@ -18,7 +15,10 @@ repo_vars:
   - DEV_DOCKERHUB_IMAGE = 'igdev/glibc'
   - PR_DOCKERHUB_IMAGE = 'igpipepr/glibc'
   - DIST_IMAGE = 'alpine'
-  - MULTIARCH = 'false'
+  - DIST_TAG = '3.17'
+  - DIST_REPO = 'https://packages.imagegenius.io/v3.17/'
+  - DIST_REPO_PACKAGES = 'glibc'
+  - MULTIARCH = 'yes'
   - CI = 'true'
   - CI_WEB = 'false'
   - CI_PORT = '80'
