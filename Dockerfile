@@ -22,7 +22,7 @@ RUN \
     glibc-i18n==${GLIBC_VERSION} && \
   (/usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true) && \
   echo "export LANG=C.UTF-8" >/etc/profile.d/locale.sh && \
-  ln -fs /usr/glibc-compat/lib/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2 && \
+  ln -fs /usr/glibc-compat/lib/ld-linux-x86-64.so.1 /lib64/ld-linux-x86-64.so.1 && \
   echo "**** cleanup ****" && \
   apk del \
     glibc-i18n && \
