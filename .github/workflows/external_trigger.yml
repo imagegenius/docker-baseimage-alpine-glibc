@@ -20,7 +20,7 @@ jobs:
           echo "**** External trigger running off of main branch. To disable this trigger, set a Github secret named \"PAUSE_EXTERNAL_TRIGGER_BASEIMAGE_ALPINE_GLIBC_MAIN\". ****"
           echo "External trigger running off of main branch. To disable this trigger, set a Github secret named \`PAUSE_EXTERNAL_TRIGGER_BASEIMAGE_ALPINE_GLIBC_MAIN\`" >> $GITHUB_STEP_SUMMARY
           echo "**** Retrieving external version ****"
-          EXT_RELEASE=$(curl -sL "https://packages.imagegenius.io/v3.17/x86_64/APKINDEX.tar.gz" | tar -xz -C /tmp \
+          EXT_RELEASE=$(curl -sL "https://packages.imagegenius.io/v3.18/x86_64/APKINDEX.tar.gz" | tar -xz -C /tmp \
             && awk '/^P:'"glibc"'$/,/V:/' /tmp/APKINDEX | sed -n 2p | sed 's/^V://')
           if [ -z "${EXT_RELEASE}" ] || [ "${EXT_RELEASE}" == "null" ]; then
             echo "**** Can't retrieve external version, exiting ****"
@@ -74,7 +74,7 @@ jobs:
             echo "**** Version ${EXT_RELEASE} already pushed, exiting ****"
             echo "Version ${EXT_RELEASE} already pushed, exiting" >> $GITHUB_STEP_SUMMARY
             exit 0
-          elif [[ $(curl -sL "https://packages.imagegenius.io/v3.17/aarch64/APKINDEX.tar.gz" | tar -xz -C /tmp && awk '/^P:'"glibc"'$/,/V:/' /tmp/APKINDEX | sed -n 2p | sed 's/^V://') != "${EXT_RELEASE}" ]]; then
+          elif [[ $(curl -sL "https://packages.imagegenius.io/v3.18/aarch64/APKINDEX.tar.gz" | tar -xz -C /tmp && awk '/^P:'"glibc"'$/,/V:/' /tmp/APKINDEX | sed -n 2p | sed 's/^V://') != "${EXT_RELEASE}" ]]; then
             echo "**** New version ${EXT_RELEASE} found; but not all arch repos updated yet; exiting ****"
             echo "New version ${EXT_RELEASE} found; but not all arch repos updated yet; exiting" >> $GITHUB_STEP_SUMMARY
             FAILURE_REASON="New version ${EXT_RELEASE} for baseimage-alpine-glibc tag latest is detected, however not all arch repos are updated yet. Will try again later."
