@@ -15,7 +15,7 @@ LABEL maintainer="hydazz"
 RUN \
   echo "**** install packages ****" && \
   if [ -z ${GLIBC_VERSION} ]; then \
-    GLIBC_VERSION=$(curl -sL "https://packages.imagegenius.io/v3.17/aarch64/APKINDEX.tar.gz" | tar -xz -C /tmp \
+    GLIBC_VERSION=$(curl -sL "https://packages.imagegenius.io/v3.18/aarch64/APKINDEX.tar.gz" | tar -xz -C /tmp \
       && awk '/^P:'"glibc"'$/,/V:/' /tmp/APKINDEX | sed -n 2p | sed 's/^V://'); \
   fi && \
   apk add --no-cache --force-overwrite \
