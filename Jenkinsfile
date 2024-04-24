@@ -19,8 +19,8 @@ pipeline {
     IG_REPO = 'docker-baseimage-alpine-glibc'
     CONTAINER_NAME = 'baseimage-alpine-glibc'
     DIST_IMAGE = 'alpine'
-    DIST_TAG = '3.18'
-    DIST_REPO = 'https://packages.imagegenius.io/v3.18/'
+    DIST_TAG = '3.19'
+    DIST_REPO = 'https://packages.imagegenius.io/v3.19/'
     DIST_REPO_PACKAGES = 'glibc'
     MULTIARCH = 'true'
     CI = 'true'
@@ -225,16 +225,18 @@ pipeline {
           script{
             env.SHELLCHECK_URL = 'https://ci-tests.imagegenius.io/' + env.CONTAINER_NAME + '/' + env.META_TAG + '/shellcheck-result.xml'
           }
-          sh '''curl -sL https://raw.githubusercontent.com/linuxserver/docker-jenkins-builder/master/checkrun.sh | /bin/bash'''
+          sh '''curl -sL https://raw.githubusercontent.com/imagegenius/docker-jenkins-builder/master/checkrun.sh | /bin/bash'''
           sh '''#! /bin/bash
                 docker run --rm \
                   -v ${WORKSPACE}:/mnt \
                   -e AWS_ACCESS_KEY_ID="${S3_KEY}" \
                   -e AWS_SECRET_ACCESS_KEY="${S3_SECRET}" \
-                  ghcr.io/linuxserver/baseimage-alpine:3.17 s6-envdir -fn -- /var/run/s6/container_environment /bin/bash -c "\
-                    apk add --no-cache py3-pip && \
-                    pip install s3cmd && \
-                    s3cmd --host=s3.imagegenius.io --host-bucket= put -m text/xml /mnt/shellcheck-result.xml s3://ci-tests.imagegenius.io/${GITHUBIMAGE}/${META_TAG}/shellcheck-result.xml" || :
+                  ghcr.io/imagegenius/baseimage-alpine:3.19 s6-envdir -fn -- /var/run/s6/container_environment /bin/bash -c "\
+                   apk add --no-cache python3 && \
+                    python3 -m venv /lsiopy && \
+                    pip install --no-cache-dir -U pip && \
+                    pip install --no-cache-dir s3cmd && \
+                    s3cmd --host=s3.imagegenius.io --host-bucket= put -m text/xml /mnt/shellcheck-result.xml s3://ci-tests.imagegenius.io/${CONTAINER_NAME}/${META_TAG}/shellcheck-result.xml" || :
              '''
         }
       }
@@ -253,12 +255,18 @@ pipeline {
               set -e
               TEMPDIR=$(mktemp -d)
               docker pull ghcr.io/imagegenius/jenkins-builder:latest
+              # Cloned repo paths for templating:
+              # ${TEMPDIR}/docker-${CONTAINER_NAME}: Cloned branch main of ${IG_USER}/${IG_REPO} for running the jenkins builder on
+              # ${TEMPDIR}/repo/${IG_REPO}: Cloned branch main of ${IG_USER}/${IG_REPO} for commiting various templated file changes and pushing back to Github
+              # ${TEMPDIR}/docs/docker-documentation: Cloned docs repo for pushing docs updates to Github
+              # ${TEMPDIR}/unraid/docker-templates: Cloned docker-templates repo to check for logos
+              # ${TEMPDIR}/unraid/templates: Cloned templates repo for commiting unraid template changes and pushing back to Github
               mkdir -p ${TEMPDIR}/source
               git clone https://ImageGeniusCI:${GITHUB_TOKEN}@github.com/${IG_USER}/${IG_REPO}.git ${TEMPDIR}/source
               cd ${TEMPDIR}/source
               git checkout -f main
               docker run --rm -e CONTAINER_NAME=${CONTAINER_NAME} -e GITHUB_BRANCH=main -v ${TEMPDIR}/source:/tmp -v ${TEMPDIR}:/ansible/jenkins ghcr.io/imagegenius/jenkins-builder:latest 
-              # Stage 1 - Jenkinsfile update
+              echo "Starting Stage 1 - Jenkinsfile update"
               if [[ "$(md5sum Jenkinsfile | awk '{ print $1 }')" != "$(md5sum ${TEMPDIR}/docker-${CONTAINER_NAME}/Jenkinsfile | awk '{ print $1 }')" ]]; then
                 mkdir -p ${TEMPDIR}/repo
                 git clone https://ImageGeniusCI:${GITHUB_TOKEN}@github.com/${IG_USER}/${IG_REPO}.git ${TEMPDIR}/repo/${IG_REPO}
@@ -267,15 +275,16 @@ pipeline {
                 cp ${TEMPDIR}/docker-${CONTAINER_NAME}/Jenkinsfile ${TEMPDIR}/repo/${IG_REPO}/
                 git add Jenkinsfile
                 git commit -m 'Bot Updating Templated Files'
-                git push https://ImageGeniusCI:${GITHUB_TOKEN}@github.com/${IG_USER}/${IG_REPO}.git --all
+                git pull https://ImageGeniusCI:${GITHUB_TOKEN}@github.com/${IG_USER}/${IG_REPO}.git main
+                git push https://ImageGeniusCI:${GITHUB_TOKEN}@github.com/${IG_USER}/${IG_REPO}.git main
                 echo "true" > /tmp/${COMMIT_SHA}-${BUILD_NUMBER}
-                echo "Updating Jenkinsfile"
+                echo "Updating Jenkinsfile and exiting build, new one will trigger based on commit"
                 rm -Rf ${TEMPDIR}
                 exit 0
               else
                 echo "Jenkinsfile is up to date."
               fi
-              # Stage 2 - Delete old templates
+              echo "Starting Stage 2 - Delete old templates"
               OLD_TEMPLATES=".github/ISSUE_TEMPLATE.md .github/ISSUE_TEMPLATE/issue.bug.md .github/ISSUE_TEMPLATE/issue.feature.md .github/workflows/call_invalid_helper.yml .github/workflows/stale.yml Dockerfile.armhf"
               for i in ${OLD_TEMPLATES}; do
                 if [[ -f "${i}" ]]; then
@@ -291,15 +300,16 @@ pipeline {
                   git rm "${i}"
                 done
                 git commit -m 'Bot Updating Templated Files'
-                git push https://ImageGeniusCI:${GITHUB_TOKEN}@github.com/${IG_USER}/${IG_REPO}.git --all
+                git pull https://ImageGeniusCI:${GITHUB_TOKEN}@github.com/${IG_USER}/${IG_REPO}.git main
+                git push https://ImageGeniusCI:${GITHUB_TOKEN}@github.com/${IG_USER}/${IG_REPO}.git main
                 echo "true" > /tmp/${COMMIT_SHA}-${BUILD_NUMBER}
-                echo "Deleting old and deprecated templates"
+                echo "Deleting old/deprecated templates and exiting build, new one will trigger based on commit"
                 rm -Rf ${TEMPDIR}
                 exit 0
               else
                 echo "No templates to delete"
               fi
-              # Stage 3 - Update templates
+              echo "Starting Stage 3 - Update templates"
               CURRENTHASH=$(grep -hs ^ ${TEMPLATED_FILES} | md5sum | cut -c1-8)
               cd ${TEMPDIR}/docker-${CONTAINER_NAME}
               NEWHASH=$(grep -hs ^ ${TEMPLATED_FILES} | md5sum | cut -c1-8)
@@ -320,10 +330,15 @@ pipeline {
                 fi
                 git add readme-vars.yml ${TEMPLATED_FILES}
                 git commit -m 'Bot Updating Templated Files'
-                git push https://ImageGeniusCI:${GITHUB_TOKEN}@github.com/${IG_USER}/${IG_REPO}.git --all
+                git pull https://ImageGeniusCI:${GITHUB_TOKEN}@github.com/${IG_USER}/${IG_REPO}.git main
+                git push https://ImageGeniusCI:${GITHUB_TOKEN}@github.com/${IG_USER}/${IG_REPO}.git main
                 echo "true" > /tmp/${COMMIT_SHA}-${BUILD_NUMBER}
+                echo "Updating templates and exiting build, new one will trigger based on commit"
+                rm -Rf ${TEMPDIR}
+                exit 0
               else
                 echo "false" > /tmp/${COMMIT_SHA}-${BUILD_NUMBER}
+                echo "No templates to update"
               fi
               rm -Rf ${TEMPDIR}'''
         script{
