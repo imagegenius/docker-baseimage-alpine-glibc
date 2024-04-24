@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ghcr.io/imagegenius/baseimage-alpine:3.18
+FROM ghcr.io/imagegenius/baseimage-alpine:3.19
 
 # set version label
 ARG BUILD_DATE
@@ -15,7 +15,7 @@ LABEL maintainer="hydazz"
 RUN \
   echo "**** install packages ****" && \
   if [ -z ${GLIBC_VERSION} ]; then \
-    GLIBC_VERSION=$(curl -sL "https://packages.imagegenius.io/v3.18/x86_64/APKINDEX.tar.gz" | tar -xz -C /tmp \
+    GLIBC_VERSION=$(curl -sL "https://packages.imagegenius.io/v3.19/x86_64/APKINDEX.tar.gz" | tar -xz -C /tmp \
       && awk '/^P:'"glibc"'$/,/V:/' /tmp/APKINDEX | sed -n 2p | sed 's/^V://'); \
   fi && \
   apk add --no-cache --force-overwrite \
